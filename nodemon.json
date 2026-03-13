@@ -1,0 +1,10 @@
+{
+  "ignore": [
+    "local_database.json",
+    ".gemini/**",
+    ".git/**",
+    "node_modules/**",
+    "uploads/**"
+  ],
+  "delay": "2500"
+}

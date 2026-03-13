@@ -1,0 +1,95 @@
+{
+  "users": [
+    {
+      "firebaseUid": "4CLaT8QIftUUffzfAKQXN5vVIIV2",
+      "name": "kiki",
+      "email": "kiki197752322@gmail.com",
+      "_id": "1773309165822",
+      "connections": [
+        "1773378582623"
+      ]
+    },
+    {
+      "firebaseUid": "aV4kEiZ7ijWEU0hI7JrgXAHExkI3",
+      "name": "keerthanakp2322",
+      "email": "keerthanakp2322@gmail.com",
+      "bio": "",
+      "skills": [],
+      "profilePicture": "",
+      "_id": "1773378348734",
+      "connections": [
+        "1773378582623"
+      ]
+    },
+    {
+      "firebaseUid": "DIFKLE5skubxPR8R88i1aDsw3yA2",
+      "name": "kp235",
+      "email": "kp235@gmail.com",
+      "bio": "",
+      "skills": [],
+      "profilePicture": "",
+      "_id": "1773378490160",
+      "connections": [
+        "1773378582623"
+      ]
+    },
+    {
+      "firebaseUid": "9AFdJnfH8xTdvPapHpahs3Ndyrl1",
+      "name": "dk",
+      "email": "kp12235@gmail.com",
+      "_id": "1773378582623",
+      "connections": [
+        "1773309165822",
+        "1773378348734",
+        "1773378490160"
+      ]
+    }
+  ],
+  "posts": [
+    {
+      "userId": "1773309165822",
+      "caption": "cutie",
+      "imageUrl": "",
+      "_id": "1773309192433",
+      "likes": [],
+      "comments": [],
+      "createdAt": "2026-03-12T09:53:12.433Z"
+    },
+    {
+      "userId": "1773309165822",
+      "caption": "hi",
+      "imageUrl": "",
+      "_id": "1773309202944",
+      "likes": [],
+      "comments": [],
+      "createdAt": "2026-03-12T09:53:22.944Z"
+    },
+    {
+      "userId": "1773309165822",
+      "caption": "krishna",
+      "imageUrl": "",
+      "_id": "1773309882506",
+      "likes": [],
+      "comments": [],
+      "createdAt": "2026-03-12T10:04:42.506Z"
+    },
+    {
+      "userId": "1773309165822",
+      "caption": "Dhoni",
+      "imageUrl": "",
+      "_id": "1773309916905",
+      "likes": [],
+      "comments": [],
+      "createdAt": "2026-03-12T10:05:16.905Z"
+    },
+    {
+      "userId": "1773378582623",
+      "caption": "cool",
+      "imageUrl": "/uploads/1773378614841-ms-dhoni.avif",
+      "_id": "1773378614860",
+      "likes": [],
+      "comments": [],
+      "createdAt": "2026-03-13T05:10:14.860Z"
+    }
+  ]
+}
