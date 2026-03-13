@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile - Mini AI LinkedIn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; }
+    body { background-color: #f3f2ef; }
+    .card { background: white; border-radius: 8px; border: 1px solid #e0dfdc; }
+    .btn-primary { background-color: #0a66c2; color: white; transition: 0.3s; }
+    .btn-primary:hover { background-color: #004182; }
+    .btn-outline { border: 1px solid #0a66c2; color: #0a66c2; transition: 0.3s; }
+    .btn-outline:hover { background-color: rgba(10, 102, 194, 0.1); border-width: 2px; padding: 3px 15px;}
+    .btn-connect {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1.5px solid #0a66c2; color: #0a66c2; font-weight: 600;
+      border-radius: 9999px; padding: 6px 20px; font-size: 14px;
+      cursor: pointer; transition: all 0.25s ease; background: transparent;
+    }
+    .btn-connect:hover { background: rgba(10, 102, 194, 0.08); transform: translateY(-1px); }
+    .btn-connected-profile {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1.5px solid #057642; color: #057642; font-weight: 600;
+      border-radius: 9999px; padding: 6px 20px; font-size: 14px;
+      cursor: pointer; transition: all 0.25s ease; background: rgba(5, 118, 66, 0.05);
+    }
+    .btn-connected-profile:hover { border-color: #c0392b; color: #c0392b; background: rgba(192, 57, 43, 0.05); }
+  </style>
+</head>
+<body class="pt-16 pb-20">
+  <nav class="bg-white border-b border-gray-200 fixed top-0 w-full z-10 h-14 flex items-center">
+    <div class="max-w-6xl mx-auto w-full px-4 flex justify-between items-center">
+      <div class="flex items-center gap-2 text-[#0a66c2] font-bold text-xl">
+        <i class="fab fa-linkedin text-3xl"></i> AI
+      </div>
+      <div class="flex gap-6 text-gray-500 text-sm font-medium items-center">
+        <a href="/feed" class="flex flex-col items-center hover:text-black"><i class="fas fa-home text-lg"></i>Home</a>
+        <a href="/network" class="flex flex-col items-center hover:text-black hover:border-b-2 pb-1 border-transparent"><i class="fas fa-users text-lg"></i>My Network</a>
+        <a href="/profile" class="flex flex-col items-center text-black border-b-2 border-black pb-1"><i class="fas fa-user-circle text-lg"></i>Me</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto px-4 mt-6">
+    <!-- Profile Card -->
+    <div class="card overflow-hidden mb-6 relative">
+      <div class="h-48 bg-gray-300 relative">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-500"></div>
+      </div>
+      
+      <div class="px-6 pb-6 relative">
+        <!-- Avatar -->
+        <div class="w-32 h-32 rounded-full border-4 border-white absolute -top-16 bg-white overflow-hidden shadow-sm">
+           <img id="profilePic" src="https://ui-avatars.com/api/?name=User&background=random" class="w-full h-full object-cover relative z-10" />
+           <div id="editAvatarWrapper" class="absolute inset-0 bg-black bg-opacity-50 z-20 hidden flex justify-center items-center cursor-pointer text-white">
+              <i class="fas fa-camera text-2xl"></i>
+              <input type="file" id="avatarInput" class="hidden" accept="image/*" />
+           </div>
+        </div>
+
+        <div class="mt-20 flex justify-between items-start">
+          <div>
+            <h1 id="profileName" class="text-2xl font-bold text-gray-900">Loading...</h1>
+            <p id="profileEmail" class="text-sm text-gray-500 mt-1">...</p>
+            <p id="profileBio" class="mt-2 text-gray-700 max-w-xl">...</p>
+            <p id="connectionsCount" class="text-sm font-semibold text-[#0a66c2] hover:underline mt-2 cursor-pointer">0 connections</p>
+          </div>
+          <div class="flex gap-2 items-center flex-shrink-0">
+            <button id="connectProfileBtn" class="btn-connect hidden"><i class="fas fa-user-plus"></i> Connect</button>
+            <button id="editProfileBtn" class="btn-outline px-4 py-1.5 rounded-full font-semibold hidden"><i class="fas fa-pen mr-1 text-sm"></i> Edit Profile</button>
+          </div>
+        </div>
+      </div>
+
+       <!-- Edit Profile Form (Hidden by default) -->
+      <div id="editFormSection" class="hidden border-t px-6 py-4 bg-gray-50">
+        <h3 class="font-semibold text-lg mb-4">Edit Intro</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="text-xs text-gray-500">Name</label>
+            <input type="text" id="editName" class="w-full border rounded p-2 text-sm" />
+          </div>
+          <div>
+            <label class="text-xs text-gray-500 flex justify-between">Bio <button id="enhanceBioBtn" class="text-purple-600 font-semibold flex items-center gap-1"><i class="fas fa-magic"></i> AI Enhance</button></label>
+            <textarea id="editBio" rows="3" class="w-full border rounded p-2 text-sm"></textarea>
+          </div>
+          <div>
+            <label class="text-xs text-gray-500">Skills (comma separated)</label>
+            <input type="text" id="editSkills" class="w-full border rounded p-2 text-sm" placeholder="e.g. JavaScript, React, Node.js" />
+          </div>
+          <div class="flex justify-end gap-2 pt-2">
+            <button id="cancelEditBtn" class="px-4 py-1.5 rounded-full font-semibold text-gray-600 hover:bg-gray-200">Cancel</button>
+            <button id="saveEditBtn" class="btn-primary px-4 py-1.5 rounded-full font-semibold">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills Section -->
+    <div class="card p-6">
+      <h2 class="text-xl font-bold mb-4">Skills</h2>
+      <div id="skillsList" class="flex flex-wrap gap-2 text-sm">
+        <p class="text-gray-500 italic">No skills added yet.</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script type="module" src="/js/profile.js"></script>
+</body>
+</html>

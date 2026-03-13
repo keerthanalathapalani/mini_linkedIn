@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Network - Mini AI LinkedIn</title>
+  <meta name="description" content="Grow your professional network. Connect with people you may know on Mini AI LinkedIn.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #f3f2ef; }
+    .card { background: white; border-radius: 10px; border: 1px solid #e0dfdc; transition: box-shadow 0.3s ease; }
+    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+    .connect-btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: 1.5px solid #0a66c2;
+      color: #0a66c2;
+      font-weight: 600;
+      border-radius: 9999px;
+      padding: 6px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background: transparent;
+    }
+    .connect-btn-icon:hover {
+      background: rgba(10, 102, 194, 0.08);
+      border-width: 2px;
+      transform: translateY(-1px);
+    }
+    .connect-btn-icon:active {
+      transform: scale(0.97);
+    }
+
+    .connected-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: 1.5px solid #057642;
+      color: #057642;
+      font-weight: 600;
+      border-radius: 9999px;
+      padding: 6px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background: rgba(5, 118, 66, 0.05);
+    }
+    .connected-btn:hover {
+      background: rgba(5, 118, 66, 0.12);
+      border-color: #c0392b;
+      color: #c0392b;
+    }
+    .connected-btn:hover .connected-text { display: none; }
+    .connected-btn:hover .disconnect-text { display: inline-flex; align-items: center; gap: 4px; }
+    .connected-btn .disconnect-text { display: none; }
+
+    .suggestion-card {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .suggestion-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    .suggestion-card .banner {
+      height: 56px;
+      background: linear-gradient(135deg, #0a66c2 0%, #004182 50%, #0073b1 100%);
+      position: relative;
+    }
+    .suggestion-card .banner::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 20px;
+      background: linear-gradient(to top, white, transparent);
+    }
+
+    .connection-card {
+      transition: transform 0.2s ease;
+    }
+    .connection-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .tab-btn {
+      padding: 12px 20px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #666;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .tab-btn:hover { color: #333; }
+    .tab-btn.active {
+      color: #057642;
+      border-bottom-color: #057642;
+    }
+
+    .animate-fade-in {
+      animation: fadeInUp 0.4s ease-out forwards;
+      opacity: 0;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #057642;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+
+    .skeleton {
+      background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body class="pt-16">
+  <nav class="bg-white border-b border-gray-200 fixed top-0 w-full z-10 h-14 flex items-center shadow-sm">
+    <div class="max-w-6xl mx-auto w-full px-4 flex justify-between items-center">
+      <div class="flex items-center gap-2 text-[#0a66c2] font-bold text-xl">
+        <i class="fab fa-linkedin text-3xl"></i> AI
+      </div>
+      <div class="flex gap-6 text-gray-500 text-sm font-medium items-center">
+        <a href="/feed" class="flex flex-col items-center hover:text-black transition-colors"><i class="fas fa-home text-lg"></i><span class="text-xs mt-0.5">Home</span></a>
+        <a href="/network" class="flex flex-col items-center text-black border-b-2 border-black pb-1"><i class="fas fa-user-friends text-lg"></i><span class="text-xs mt-0.5">My Network</span></a>
+        <a href="/profile" class="flex flex-col items-center hover:text-black transition-colors"><i class="fas fa-user-circle text-lg"></i><span class="text-xs mt-0.5">Me</span></a>
+        <button id="logoutBtn" class="flex flex-col items-center hover:text-red-500 transition-colors"><i class="fas fa-sign-out-alt text-lg"></i><span class="text-xs mt-0.5">Logout</span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 mt-6 grid grid-cols-1 md:grid-cols-4 gap-6 pb-10">
+    <!-- Left Sidebar -->
+    <aside class="col-span-1">
+      <div class="card p-4">
+        <h3 class="font-semibold text-gray-700 border-b pb-3 mb-3">Manage my network</h3>
+        <ul class="space-y-3 text-gray-600 text-sm">
+          <li id="sidebarConnections" class="flex justify-between items-center cursor-pointer hover:bg-blue-50 p-2 rounded-lg transition-colors">
+            <span class="flex items-center gap-3"><i class="fas fa-user-friends text-[#0a66c2]"></i> Connections</span>
+            <span id="connectionsTotalCount" class="bg-[#0a66c2] text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+          </li>
+          <li class="flex justify-between items-center cursor-pointer hover:bg-blue-50 p-2 rounded-lg transition-colors">
+            <span class="flex items-center gap-3"><i class="fas fa-user-plus text-[#0a66c2]"></i> Invitations</span>
+          </li>
+          <li class="flex justify-between items-center cursor-pointer hover:bg-blue-50 p-2 rounded-lg transition-colors">
+            <span class="flex items-center gap-3"><i class="fas fa-address-book text-[#0a66c2]"></i> Contacts</span>
+          </li>
+          <li class="flex justify-between items-center cursor-pointer hover:bg-blue-50 p-2 rounded-lg transition-colors">
+            <span class="flex items-center gap-3"><i class="fas fa-rss text-[#0a66c2]"></i> Following & followers</span>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Center Content -->
+    <section class="col-span-1 md:col-span-3 space-y-6">
+      <!-- Tabs -->
+      <div class="card">
+        <div class="flex border-b">
+          <button id="tabSuggestions" class="tab-btn active" onclick="window.switchTab('suggestions')">
+            <i class="fas fa-user-plus mr-2"></i>People you may know
+          </button>
+          <button id="tabConnections" class="tab-btn" onclick="window.switchTab('connections')">
+            <i class="fas fa-link mr-2"></i>My Connections
+          </button>
+        </div>
+
+        <!-- Suggestions Tab -->
+        <div id="suggestionsTab" class="p-4">
+          <div id="suggestionsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <p class="text-center text-gray-500 col-span-full py-10"><i class="fas fa-spinner fa-spin mr-2"></i>Finding connections...</p>
+          </div>
+        </div>
+
+        <!-- My Connections Tab -->
+        <div id="connectionsTab" class="p-4 hidden">
+          <div id="connectionsList" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <p class="text-center text-gray-500 col-span-full py-10"><i class="fas fa-spinner fa-spin mr-2"></i>Loading connections...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script type="module" src="/js/network.js"></script>
+</body>
+</html>

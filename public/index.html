@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini AI LinkedIn - Login / Sign Up</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f3f2ef; }
+    .auth-card { background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .btn-primary { background-color: #0a66c2; color: white; transition: 0.3s; }
+    .btn-primary:hover { background-color: #004182; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+  <nav class="bg-white p-4 shadow-sm">
+    <div class="max-w-6xl mx-auto flex justify-between items-center text-[#0a66c2] text-2xl font-bold">
+      <span>Mini AI LinkedIn <i class="fab fa-linkedin"></i></span>
+    </div>
+  </nav>
+  
+  <div class="flex-grow flex items-center justify-center p-4">
+    <div class="auth-card w-full max-w-md p-8">
+      <h2 id="formTitle" class="text-3xl font-semibold mb-6 text-gray-800 text-center">Sign In</h2>
+      
+      <form id="authForm" class="space-y-4">
+        <div id="nameDiv" class="hidden">
+          <label class="block text-sm font-medium text-gray-700">Name</label>
+          <input type="text" id="nameInput" class="mt-1 block w-full p-2 border border-gray-300 rounded focus:ring-[#0a66c2] focus:border-[#0a66c2]" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="emailInput" required class="mt-1 block w-full p-2 border border-gray-300 rounded focus:ring-[#0a66c2] focus:border-[#0a66c2]" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Password</label>
+          <input type="password" id="passwordInput" required minlength="6" class="mt-1 block w-full p-2 border border-gray-300 rounded focus:ring-[#0a66c2] focus:border-[#0a66c2]" />
+        </div>
+        <button type="submit" id="submitBtn" class="w-full btn-primary p-3 rounded font-semibold text-lg flex justify-center items-center">
+          Sign In
+        </button>
+      </form>
+      
+      <p class="mt-6 text-center text-sm text-gray-600">
+        <span id="toggleText">New to LinkedIn?</span>
+        <button id="toggleBtn" class="text-[#0a66c2] font-semibold hover:underline">Join now</button>
+      </p>
+    </div>
+  </div>
+
+  <!-- Setup Firebase & Client Logic -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script type="module" src="/js/auth.js"></script>
+</body>
+</html>

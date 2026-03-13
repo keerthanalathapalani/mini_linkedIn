@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feed - Mini AI LinkedIn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #f3f2ef; }
+    .card { background: white; border-radius: 8px; border: 1px solid #e0dfdc; }
+    .btn-primary { background-color: #0a66c2; color: white; transition: 0.3s; }
+    .btn-primary:hover { background-color: #004182; }
+    .btn-ghost { color: rgba(0,0,0,0.6); transition: 0.2s; }
+    .btn-ghost:hover { background-color: rgba(0,0,0,0.08); color: rgba(0,0,0,0.9); }
+    .feed-connect-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      border: 1.5px solid #0a66c2; color: #0a66c2; font-weight: 600;
+      border-radius: 9999px; padding: 3px 12px; font-size: 12px;
+      cursor: pointer; transition: all 0.2s ease; background: transparent;
+    }
+    .feed-connect-btn:hover { background: rgba(10, 102, 194, 0.08); }
+    .feed-connected-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      border: 1.5px solid #057642; color: #057642; font-weight: 600;
+      border-radius: 9999px; padding: 3px 12px; font-size: 12px;
+      cursor: pointer; transition: all 0.2s ease; background: rgba(5, 118, 66, 0.05);
+    }
+  </style>
+</head>
+<body class="pt-16">
+  <nav class="bg-white border-b border-gray-200 fixed top-0 w-full z-10 h-14 flex items-center">
+    <div class="max-w-6xl mx-auto w-full px-4 flex justify-between items-center">
+      <div class="flex items-center gap-2 text-[#0a66c2] font-bold text-xl">
+        <i class="fab fa-linkedin text-3xl"></i> AI
+      </div>
+      <div class="flex gap-6 text-gray-500 text-sm font-medium items-center">
+        <a href="/feed" class="flex flex-col items-center text-black border-b-2 border-black pb-1"><i class="fas fa-home text-lg"></i>Home</a>
+        <a href="/network" class="flex flex-col items-center hover:text-black hover:border-b-2 pb-1 border-transparent"><i class="fas fa-users text-lg"></i>My Network</a>
+        <a href="/profile" class="flex flex-col items-center hover:text-black hover:border-b-2 pb-1 border-transparent"><i class="fas fa-user-circle text-lg"></i>Me</a>
+        <button id="logoutBtn" class="flex flex-col items-center hover:text-red-500"><i class="fas fa-sign-out-alt text-lg"></i>Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+    <!-- Left Sidebar (Profile Snippet) -->
+    <aside class="hidden md:block col-span-1">
+      <div class="card text-center pb-4 relative overflow-hidden">
+        <div class="h-16 bg-gradient-to-r from-blue-300 to-blue-500 mb-8 absolute w-full top-0"></div>
+        <img id="sidebarPic" src="https://ui-avatars.com/api/?name=User&background=random" class="w-16 h-16 rounded-full border-2 border-white mx-auto z-10 relative mt-8 object-cover object-center" />
+        <h3 id="sidebarName" class="font-semibold mt-2 px-2 hover:underline cursor-pointer">Loading...</h3>
+        <p id="sidebarBio" class="text-xs text-gray-500 mt-1 px-4 leading-relaxed">...</p>
+      </div>
+    </aside>
+
+    <!-- Center Feed -->
+    <section class="col-span-1 md:col-span-2 space-y-4">
+      <!-- Create Post Box -->
+      <div class="card p-4">
+        <div class="flex gap-3">
+          <img id="createPostPic" src="https://ui-avatars.com/api/?name=User&background=random" class="w-12 h-12 rounded-full object-cover">
+          <textarea id="postCaption" rows="2" class="w-full border border-gray-400 rounded-full px-4 py-3 focus:outline-none focus:border-gray-500 hover:bg-gray-100 transition resize-none bg-transparent" placeholder="Start a post"></textarea>
+        </div>
+        <div id="imagePreviewContainer" class="hidden mt-3 max-h-64 overflow-hidden rounded relative">
+          <img id="imagePreview" class="w-full h-auto" />
+          <button id="removeImageBtn" class="absolute top-2 right-2 bg-gray-800 text-white rounded-full p-1 opacity-70 hover:opacity-100 w-8 h-8 flex justify-center items-center"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="flex justify-between mt-3 pt-2">
+          <div class="flex gap-1">
+            <label class="btn-ghost flex items-center gap-2 p-3 rounded cursor-pointer font-semibold text-sm">
+              <i class="fas fa-image text-blue-500 text-lg"></i> Media
+              <input type="file" id="postImageInput" class="hidden" accept="image/*" />
+            </label>
+            <button id="enhanceCaptionBtn" class="btn-ghost flex items-center gap-2 p-3 rounded font-semibold text-sm">
+              <i class="fas fa-magic text-purple-500 text-lg"></i> AI Enhance
+            </button>
+          </div>
+          <button id="submitPostBtn" class="btn-primary px-4 py-1.5 rounded-full font-semibold opacity-50 cursor-not-allowed text-sm">Post</button>
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <div id="notificationsArea" class="space-y-2"></div>
+      
+      <!-- Feed Container -->
+      <div id="feedContainer" class="space-y-4 pb-10">
+        <p class="text-center text-gray-500 my-10"><i class="fas fa-spinner fa-spin mr-2"></i>Loading posts...</p>
+      </div>
+    </section>
+
+    <!-- Right Sidebar -->
+    <aside class="hidden md:block col-span-1">
+      <div class="card p-4">
+        <h3 class="font-semibold text-sm mb-3 text-gray-800">Trending Skills</h3>
+        <div class="flex flex-wrap gap-2 text-xs">
+          <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">JavaScript</span>
+          <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">React</span>
+          <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Node.js</span>
+          <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">AI/ML</span>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Setup Firebase & Client Logic first before our scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script type="module" src="/js/posts.js"></script>
+</body>
+</html>
